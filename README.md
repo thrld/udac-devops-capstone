@@ -1,0 +1,7 @@
+- `git clone git@github.com:andresaaap/tutorial-green-blue-deploy-minikube.git`
+- `cd tutorial-green-blue-deploy-minikube`
+- `find . -type f -name '*.sh' -print0 | xargs -0 dos2unix` (if you don't have `dos2unix` on your system, type `sudo apt-get install dos2unix` first)
+- `find . -type f -name "*.html" -print0 | xargs -0 sed -i -e 's/Hello World, my name is Alvaro Pinzon/Hello world, my name is thrld!/g'`
+- Now try to build and run the green container: `cd green && ./run_docker.sh`. Open http://localhost:8000/ in your browser to verify. Note that you have to `cd` first, since the `docker build` command in `run_docker.sh` will look for a `Dockerfile` in your current directory. 
+- Exit with `Ctrl + C` and run the blue container: `cd ../blue && ./run_docker.sh`. Open http://localhost:8000/ in your browser to verify.
+- Next, I manually cleaned up `./green/upload_docker.sh` and `./blue/upload_docker.sh` and provided the correct Docker user and paths. To test, call `cd green && ./upload_docker.sh` and `cd blue && ./upload_docker.sh`. The two images should now uploaded and accessible from DockerHub.

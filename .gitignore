@@ -6,3 +6,6 @@ __pycache__
 *.pyc
 *trace
 *.egg-info/
+
+# do not upload screenshots (contain URLS, etc...)
+screenshots

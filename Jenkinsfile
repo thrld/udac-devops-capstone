@@ -42,8 +42,8 @@ pipeline {
 		stage('Push images To DockerHub') {
 			steps {
 					sh '''
-                    docker push $DOCKERHUB_USER/blueimage
-                    docker push $DOCKERHUB_USER/greenimage
+                    docker push $DOCKERHUB_USR/blueimage
+                    docker push $DOCKERHUB_USR/greenimage
 					'''
 			}
 		}

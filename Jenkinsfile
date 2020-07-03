@@ -32,11 +32,9 @@ pipeline {
 
 		stage('Push Image To DockerHub') {
 			steps {
-			    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PWD', usernameVariable: 'DOCKERHUB_USR')]) {
 					sh '''
                     ./blue_green_static_html/blue/upload_docker.sh
 					'''
-				}
 			}
 		}
 

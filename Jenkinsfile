@@ -1,5 +1,10 @@
 pipeline {
 	agent any
+
+	environment {
+	    DOCKERHUB_USR = 'thrld'
+	}
+
 	stages {
 
 
@@ -12,41 +17,39 @@ pipeline {
 			}
 		}
 
-        stage('Build Docker image') {
+        stage('Build Docker images') {
             steps{
                 sh '''
                     cd ./blue_green_static_html/blue
-                    docker build --tag=thrld/blueimage .
+                    docker build --tag=$DOCKERHUB_USR/blueimage .
+                    docker image ls
+
+                    cd ../green
+                    docker build --tag=$DOCKERHUB_USR/greenimage .
                     docker image ls
                    '''
             }
         }
 
-        stage('Login to dockerhub') {
+        stage('Login to DockerHub') {
             steps {
                 withCredentials([string(credentialsId: 'docker-pwd', variable: 'DOCKERHUB_PWD')]) {
-                    sh 'docker login -u thrld -p ${DOCKERHUB_PWD}'
+                    sh 'docker login -u $DOCKERHUB_USR -p $DOCKERHUB_PWD'
                 }
             }
         }
 
-		stage('Push Image To DockerHub') {
+		stage('Push images To DockerHub') {
 			steps {
 					sh '''
-                    DOCKER_USER=thrld
-                    IMAGE_NAME=blueimage
-                    DOCKER_PATH=$DOCKER_USER/$IMAGE_NAME
-
-                    echo "Docker ID and Image: $DOCKER_PATH"
-
-                    # Push image to a docker repository
-                    docker push $DOCKER_PATH
+                    docker push $DOCKERHUB_USER/blueimage
+                    docker push $DOCKERHUB_USER/greenimage
 					'''
 			}
 		}
 
 
-		stage('Wait user approve') {
+		stage('Wait for user approval') {
             steps {
                 input "Ready to redirect traffic to green?"
             }

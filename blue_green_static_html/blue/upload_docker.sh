@@ -17,4 +17,4 @@ echo "Docker ID and Image: $DOCKER_PATH"
 
 # Step 3:
 # Push image to a docker repository
-sudo docker push $DOCKER_PATH
+docker push $DOCKER_PATH

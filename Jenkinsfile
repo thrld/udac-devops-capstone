@@ -16,8 +16,8 @@ pipeline {
             steps{
                 sh '''
                     cd ./blue_green_static_html/blue
-                    sudo docker build --tag=blueimage .
-                    sudo docker image ls
+                    docker build --tag=blueimage .
+                    docker image ls
                    '''
             }
         }

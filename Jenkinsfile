@@ -48,6 +48,34 @@ pipeline {
 			}
 		}
 
+		stage('Set current kubectl context') {
+			steps {
+				withAWS(region:'us-east-1', credentials:'ecr_credentials') {
+					sh '''
+						kubectl config current-context
+					'''
+				}
+			}
+		}
+		stage('Deploy blue container') {
+			steps {
+				withAWS(region:'us-west-2', credentials:'ecr_credentials') {
+					sh '''
+						kubectl apply -f ./blue_green_static_html/blue/blue-controller.json
+					'''
+				}
+			}
+		}
+
+		stage('Deploy green container') {
+			steps {
+				withAWS(region:'us-west-2', credentials:'ecr_credentials') {
+					sh '''
+						kubectl apply -f ./blue_green_static_html/green/green-controller.json
+					'''
+				}
+			}
+		}
 
 		stage('Wait for user approval') {
             steps {
@@ -55,10 +83,21 @@ pipeline {
             }
         }
 
+		stage('Switch to green') {
+			steps {
+				withAWS(region:'us-west-2', credentials:'ecr_credentials') {
+					sh '''
+						kubectl apply -f ./blue_green_static_html/green-service.json
+					'''
+				}
+			}
+		}
+
         stage('Done') {
             steps {
                 sh 'echo "Done!"'
             }
-         }
+        }
+
 	}
 }

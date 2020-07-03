@@ -77,6 +77,16 @@ pipeline {
 			}
 		}
 
+		stage('Set to blue') {
+			steps {
+				withAWS(region:'us-east-2', credentials:'aws-static') {
+					sh '''
+						kubectl apply -f ./blue_green_static_html/blue-service.json
+					'''
+				}
+			}
+		}
+
 		stage('Wait for user approval') {
             steps {
                 input "Ready to redirect traffic to green?"

@@ -50,7 +50,7 @@ pipeline {
 
 		stage('Set current kubectl context') {
 			steps {
-				withAWS(region:'us-east-1', credentials:'ecr_credentials') {
+				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
 						kubectl config current-context
 					'''
@@ -59,7 +59,7 @@ pipeline {
 		}
 		stage('Deploy blue container') {
 			steps {
-				withAWS(region:'us-west-2', credentials:'ecr_credentials') {
+				withAWS(region:'us-eest-2', credentials:'aws-static') {
 					sh '''
 						kubectl apply -f ./blue_green_static_html/blue/blue-controller.json
 					'''
@@ -69,7 +69,7 @@ pipeline {
 
 		stage('Deploy green container') {
 			steps {
-				withAWS(region:'us-west-2', credentials:'ecr_credentials') {
+				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
 						kubectl apply -f ./blue_green_static_html/green/green-controller.json
 					'''
@@ -85,7 +85,7 @@ pipeline {
 
 		stage('Switch to green') {
 			steps {
-				withAWS(region:'us-west-2', credentials:'ecr_credentials') {
+				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
 						kubectl apply -f ./blue_green_static_html/green-service.json
 					'''

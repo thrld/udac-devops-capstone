@@ -33,7 +33,14 @@ pipeline {
 		stage('Push Image To DockerHub') {
 			steps {
 					sh '''
-                    ./blue_green_static_html/blue/upload_docker.sh
+                    DOCKER_USER=thrld
+                    IMAGE_NAME=blueimage
+                    DOCKER_PATH=$DOCKER_USER/$IMAGE_NAME
+
+                    echo "Docker ID and Image: $DOCKER_PATH"
+
+                    # Push image to a docker repository
+                    docker push $DOCKER_PATH
 					'''
 			}
 		}

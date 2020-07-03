@@ -94,6 +94,6 @@ Once you create the pipeline in Jenkins, the `Jenkinsfile` will be picked up. I 
 [Here](https://docs.aws.amazon.com/eks/latest/userguide/delete-cluster.html) is the relevant section in the AWS docs.
 
 - First, we have to delete all services with an external IP. So let us list all services first: `kubectl get svc --all-namespaces`. Let us say we found one service with an external IP in the `default` namespace with the name `delete-me`, then delete via `kubectl delete svc`.
-- Now type `eksctl delete cluster -r us-east-2 -n prod` to delete the cluster.
+- Now type `eksctl delete cluster -r us-east-2 -n udac-cluster` to delete the cluster.
 
 > Sometimes this command fails with a `Dependency Violation` (see [this discussion](https://github.com/weaveworks/eksctl/issues/1849)). In my case, it helped to delete dangling ENI(s) as suggested [here](https://github.com/weaveworks/eksctl/issues/1849#issuecomment-628879572). Once this is done, simply re-run the `eksctl delete cluster` command.

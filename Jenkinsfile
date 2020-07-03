@@ -52,7 +52,7 @@ pipeline {
 			steps {
 				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
-						kubectl config current-context
+					    aws --region us-east-2 eks update-kubeconfig --name udac-cluster
 					'''
 				}
 			}

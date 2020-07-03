@@ -6,8 +6,8 @@ pipeline {
 		stage('Lint HTML') {
 			steps {
 				sh '''
-				    tidy -q -e ./blue/*.html
-				    tidy -q -e ./green/*.html
+				    tidy -q -e ./blue_green_static_html/blue/*.html
+				    tidy -q -e ./blue_green_static_html/green/*.html
 				   '''
 			}
 		}
@@ -15,8 +15,8 @@ pipeline {
         stage('Build Docker image') {
             steps{
                 sh '''
-                    docker build -t thrld/capstone .
-                    docker tag thrld/capstone thrld/capstone
+                    ./blue_green_static_html/blue/run_docker.sh
+                    ./blue_green_static_html/green/run_docker.sh
                    '''
             }
         }
@@ -25,8 +25,8 @@ pipeline {
 			steps {
 			    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PWD', usernameVariable: 'DOCKERHUB_USR')]) {
 					sh '''
-                        docker login -u $DOCKERHUB_USR -p $DOCKERHUB_PWD"
-						docker push thrld/capstone
+                    ./blue_green_static_html/blue/upload_docker.sh
+                    ./blue_green_static_html/green/upload_docker.sh
 					'''
 				}
 			}

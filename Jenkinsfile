@@ -39,7 +39,7 @@ pipeline {
             }
         }
 
-        stage('Done')
+        stage('Done') {
             steps {
                 sh 'echo "Done!"'
             }
